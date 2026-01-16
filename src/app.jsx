@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 export default function Board(){
     // create a piece of state to store the name
@@ -7,8 +7,15 @@ export default function Board(){
     const [people, setPeople] = useState([])
 
     //fetch the data fromt the json file
-   
+  
+useEffect(() =>{
+    fetch('http://localhost:3000/api/birthdays')
+    .then(res => res.json())
+    .then(data => {setPeople(data)})
+    .catch(error =>{console.error("Failed to load birthdays", error)
 
+    })
+},[])
       // create a function to handle the name change
     function handleNameChange(e){
         setName(e.target.value)
@@ -26,8 +33,23 @@ export default function Board(){
         // ignore empty inputs
         if(!name || !birthday ) return
 
+        fetch('http://localhost:3000/api/birthdays', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({name, birthday})
+        })
+
+        .then(res => res.json())
+        .then(savedBirthday => {
+            setPeople(prev => [...prev, savedBirthday])
+            setName("")
+            setBirthday("")
+        })
+
+        .catch(error => {console.error("Failed to save birthday", error)})
         const newPerson = {
-            id: crypto.randomUUID(),
             name: name,
             birthday: birthday,
         }
@@ -45,10 +67,10 @@ export default function Board(){
     return (
     <div className="Birthday-reminder">
         <h1>Birthday Reminder</h1>
-        <form>
+        <form onClick={handleSubmit}>
         <input type="text" placeholder="Name" value={name} onChange={handleNameChange}/>
         <input type="date" placeholder="Birthday" value={birthday} onChange={handleBirthdayChange}/>
-        <button type="button" onClick={handleSubmit}>Submit</button>
+        <button type="submit">Submit</button>
         </form>
         <ul>
             {people.map(sortedBirthdays =>(

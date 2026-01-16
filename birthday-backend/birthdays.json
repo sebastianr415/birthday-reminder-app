@@ -1,1 +1,17 @@
-[]
+[
+  {
+    "id": "8e81d00c-8163-4559-846e-afcc6919a7e3",
+    "name": "Test Person",
+    "birthday": "1995-06-15"
+  },
+  {
+    "id": "9fb1010c-5521-4347-8b36-8d30f6fe22a5",
+    "name": "Test Person",
+    "birthday": "1995-06-15"
+  },
+  {
+    "id": "01daccb6-018c-488e-ba05-21c2013efc74",
+    "name": "sebastian ramirez",
+    "birthday": "1999-01-24"
+  }
+]
